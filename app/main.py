@@ -13,12 +13,12 @@ def main():
     
     def response(path):
         responses = {
-            '/': "HTTP/1.1 200 OK\r\n\r\n"
+            '/': "HTTP/1.1 200 OK\r\n\r\n".encode()
         }
         
-        default_response = "HTTP/1.1 404 Not Found\r\n\r\n"
+        default_response = "HTTP/1.1 404 Not Found\r\n\r\n".encode()
         
-        responses.get(path, default_response)
+        return responses.get(path, default_response)
     
     server_socket = socket.create_server(("localhost", 4221), reuse_port=True)
     server_socket.listen() 
@@ -28,12 +28,13 @@ def main():
         data = client_socket.recv(1024).decode()
         method, path, version = parse_request(data)
         http_response = response(path)
-        client_socket.sendall(http_response.encode())
+        client_socket.sendall(http_response)
         client_socket.close()
         
+    
         
-    
-    
+        
+
 
 
 if __name__ == "__main__":

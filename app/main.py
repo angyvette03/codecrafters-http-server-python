@@ -25,7 +25,7 @@ def main():
     
     while True:
         client_socket, client_address = server_socket.accept()
-        data = client_socket.recv(1024)
+        data = client_socket.recv(1024).decode()
         method, path, version = parse_request(data)
         http_response = response(path)
         client_socket.sendall(http_response.encode())

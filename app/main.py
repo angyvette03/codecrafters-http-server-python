@@ -10,17 +10,13 @@ def main():
         lines = request.split("\r\n")
         method, path, version = lines[0].split(" ")
         splitPath = path.split("/")
-        res = splitPath[1]
+        if len(splitPath) > 2:
+            res = splitPath[2]
+        else:
+            res = ""
         return method, path, version, res
     
     def response(res):
-        # responses = {
-        #     '/': "HTTP/1.1 200 OK\r\n\r\n".encode()
-        # }
-        
-        # default_response = "HTTP/1.1 404 Not Found\r\n\r\n".encode()
-        
-        # return responses.get(path, default_response)
         resType = 'text/plain'
         length = str(len(res))
         body = str(res)
@@ -38,11 +34,6 @@ def main():
         client_socket.sendall(http_response)
         client_socket.close()
         
-    
-        
-        
-
-
 
 if __name__ == "__main__":
     main()

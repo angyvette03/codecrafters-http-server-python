@@ -35,7 +35,7 @@ def main():
         client_socket, client_address = server_socket.accept()
         data = client_socket.recv(1024).decode()
         method, path, version = parse_request(data)
-        http_response = response(path)
+        http_response = response(path,data)
         client_socket.sendall(http_response)
         client_socket.close()
 if __name__ == "__main__":

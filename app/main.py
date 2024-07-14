@@ -13,7 +13,7 @@ def main():
         if len(splitPath) > 2:
             res = splitPath[2]
         else:
-            res = ""
+            res = splitPath[1]
         return method, path, version, res
     
     def response(res):

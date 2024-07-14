@@ -17,7 +17,7 @@ def main():
             return "HTTP/1.1 200 OK\r\n\r\n".encode()
         elif ('user-agent' in path):
             lines = request.split("\r\n")
-            userAgent = lines[2].split(":")[1]
+            userAgent = lines[2].split(": ")[1]
             length = str(len(userAgent))
             return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\r\n{userAgent}").encode()
         elif ("echo" in path):

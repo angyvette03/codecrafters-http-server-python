@@ -11,11 +11,16 @@ def main():
         method, path, version = lines[0].split(" ")
         return method, path, version
     
-    def response(path):
+    def response(path, request):
+        resType = 'text/plain'
         if (path =='/'):
             return "HTTP/1.1 200 OK\r\n\r\n".encode()
+        elif ('user-agent' in path):
+            lines = request.split("\r\n")
+            userAgent = lines[2].split(" ")[1].split("\r\n")
+            length = str(len(userAgent))
+            return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\r\n{userAgent}").encode()
         elif ("echo" in path):
-            resType = 'text/plain'
             res = path.split('/')[2]
             length = str(len(res))
             body = str(res)

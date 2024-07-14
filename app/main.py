@@ -12,7 +12,7 @@ def main():
         return method, path, version
     
     def response(path):
-        if (path[1]=='/'):
+        if (path =='/'):
             return "HTTP/1.1 200 OK\r\n\r\n".encode()
         elif ("echo" in path):
             resType = 'text/plain'

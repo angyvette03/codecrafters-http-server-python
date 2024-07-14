@@ -10,7 +10,7 @@ def main():
         lines = request.split("\r\n")
         method, path, version = lines[0].split(" ")
         splitPath = path.split("/")
-        res = splitPath[2]
+        res = splitPath[1]
         return method, path, version, res
     
     def response(res):

@@ -36,8 +36,8 @@ def main():
                 return (f"HTTP/1.1 200 OK\r\nContent-Type: {contentType}\r\nContent-Length: {contentLength}\r\n\r\n{fileContent}").encode()
             else:
                 return "HTTP/1.1 404 Not Found\r\n\r\n".encode()
-        else:
-            return "HTTP/1.1 404 Not Found\r\n\r\n".encode()
+        # else:
+        #     return "HTTP/1.1 404 Not Found\r\n\r\n".encode()
     
     server_socket = socket.create_server(("localhost", 4221), reuse_port=True)
     server_socket.listen() 

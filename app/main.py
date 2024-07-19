@@ -1,6 +1,7 @@
 # Uncomment this to pass the first stage
 import socket
 import threading
+import os
 
 
 def main():
@@ -26,18 +27,21 @@ def main():
             length = str(len(res))
             body = str(res)
             return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\r\n{body}").encode()
+        elif ("files" in path):
+            fileExist = os.path.exists(path)
+            if fileExist:
+                contentType = 'application/octet-stream'
+                contentLength = os.path.getsize(path)
+                with open(path) as file: fileContent = file.read()
+                return (f"HTTP/1.1 200 OK\r\nContent-Type: {contentType}\r\nContent-Length: {contentLength}\r\n\r\n{fileContent}").encode()
+            else:
+                return "HTTP/1.1 404 Not Found\r\n\r\n".encode()
         else:
             return "HTTP/1.1 404 Not Found\r\n\r\n".encode()
     
     server_socket = socket.create_server(("localhost", 4221), reuse_port=True)
     server_socket.listen() 
-    
-    # def handle_client_connection(client_socket):
-        # request = client_socket.recv(1024)
-        # print(f"Received: {request.decode('utf-8')}")
-        # response = "HTTP/1.1 200 OK\r\n\r\n"
-        # client_socket.send(response.encode('utf-8'))
-        # client_socket.close()
+
     def handle_client_connection(client_socket):
         request = client_socket.recv(1024).decode('utf-8')
         print(f"Received: {request}")
@@ -54,11 +58,6 @@ def main():
     
     while True:
         client_socket, client_address = server_socket.accept()
-        # request = client_socket.recv(1024).decode()
-        # method, path, version = parse_request(data)
-        # http_response = response(path,data)
-        # client_socket.sendall(http_response)
-        # client_socket.close()
         client_handler = threading.Thread(target=handle_client_connection, args=(client_socket,))
         client_handler.start()
         

@@ -2,6 +2,7 @@
 import socket
 import threading
 import os
+import sys
 
 
 def main():
@@ -9,6 +10,7 @@ def main():
     print("Logs from your program will appear here!")
     
     def parse_request(request):
+        
         lines = request.split("\r\n")
         method, path, version = lines[0].split(" ")
         return method, path, version
@@ -27,12 +29,14 @@ def main():
             length = str(len(res))
             body = str(res)
             return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\r\n{body}").encode()
-        elif ("files" in path):
-            fileExist = os.path.exists(path)
-            if fileExist:
+        elif (path.startswith('/files/')):
+            directory = sys.argv[2]
+            filename = path[7:]
+            filePath = directory + filename
+            if os.path.exists(filePath) and os.path.isfile(filePath):
                 contentType = 'application/octet-stream'
                 contentLength = os.path.getsize(path)
-                with open(path) as file: fileContent = file.read()
+                with open(filePath) as file: fileContent = file.read()
                 return (f"HTTP/1.1 200 OK\r\nContent-Type: {contentType}\r\nContent-Length: {contentLength}\r\n\r\n{fileContent}").encode()
             else:
                 return "HTTP/1.1 404 Not Found\r\n\r\n".encode()

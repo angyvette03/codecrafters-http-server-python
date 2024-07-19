@@ -38,8 +38,8 @@ def main():
                     return (f"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {len(body)}\r\n\r\n{body}").encode()
             except Exception as e:
                     return f"HTTP/1.1 404 Not Found\r\n\r\n".encode()
-        # else:
-        #     return "HTTP/1.1 404 Not Found\r\n\r\n".encode()
+        else:
+            return "HTTP/1.1 404 Not Found\r\n\r\n".encode()
     
     server_socket = socket.create_server(("localhost", 4221), reuse_port=True)
     server_socket.listen() 

@@ -28,7 +28,7 @@ def main():
                 print('hello', acceptEncodingHeader)
                 encodingType = acceptEncodingHeader.split(" ")[1]
                 if(encodingType == 'gzip'):
-                    return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Encoding: gzip").encode()
+                    return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Encoding: gzip\r\n").encode()
                 elif(encodingType == 'invalid-encoding'):
                     return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\n").encode()
                 else:

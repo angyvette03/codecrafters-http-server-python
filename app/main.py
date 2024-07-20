@@ -25,7 +25,7 @@ def main():
                 return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\r\n{userAgent}").encode()
             elif ("echo" in path):
                 acceptEncodingHeader = request.split("\r\n")[1]
-                print(acceptEncodingHeader)
+                print('hello', acceptEncodingHeader)
                 encodingType = acceptEncodingHeader.split(" ")[1]
                 if(encodingType == 'gzip'):
                     return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Encoding: {encodingType}").encode()

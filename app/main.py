@@ -66,7 +66,7 @@ def main():
         # Generating the appropriate response based on the path
         http_response = response(method, path, request)
         print(f"Request: {request}")
-        print(f"Response: {http_response}")
+        print(f"Response: {http_response.decode()}")
         
         
         # Sending the response back to the client

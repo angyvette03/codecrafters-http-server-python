@@ -1,7 +1,6 @@
 # Uncomment this to pass the first stage
 import socket
 import threading
-import os
 import sys
 
 
@@ -12,31 +11,42 @@ def main():
     def parse_request(request):
         lines = request.split("\r\n")
         method, path, version = lines[0].split(" ")
-        return method, path, version
+        headers = lines[1: -1]
+        body = lines[-1]
+        return method, path, version, headers, body
     
-    def response(path, request):
+    def response(method, path, request, headers, reqBody):
         resType = 'text/plain'
-        if (path =='/'):
-            return "HTTP/1.1 200 OK\r\n\r\n".encode()
-        elif ('user-agent' in path):
-            lines = request.split("\r\n")
-            userAgent = lines[2].split(": ")[1]
-            length = str(len(userAgent))
-            return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\r\n{userAgent}").encode()
-        elif ("echo" in path):
-            res = path.split('/')[2]
-            length = str(len(res))
-            body = str(res)
-            return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\r\n{body}").encode()
-        elif (path.startswith('/files')):
-            directory = sys.argv[2]
-            filename = path[7:]
-            try:
-                with open(f"/{directory}/{filename}", "r") as f:
-                    body = f.read()
-                    return (f"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {len(body)}\r\n\r\n{body}").encode()
-            except Exception as e:
-                    return f"HTTP/1.1 404 Not Found\r\n\r\n".encode()
+        if method == 'GET':
+            if (path =='/'):
+                return "HTTP/1.1 200 OK\r\n\r\n".encode()
+            elif ('user-agent' in path):
+                lines = request.split("\r\n")
+                userAgent = lines[2].split(": ")[1]
+                length = str(len(userAgent))
+                return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\r\n{userAgent}").encode()
+            elif ("echo" in path):
+                res = path.split('/')[2]
+                length = str(len(res))
+                body = str(res)
+                return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\r\n{body}").encode()
+            elif (path.startswith('/files')):
+                directory = sys.argv[2]
+                filename = path[7:]
+                try:
+                    with open(f"/{directory}/{filename}", "r") as f:
+                        body = f.read()
+                        return (f"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {len(body)}\r\n\r\n{body}").encode()
+                except Exception as e:
+                        return f"HTTP/1.1 404 Not Found\r\n\r\n".encode()
+        elif (method == 'POST'):
+            if (path.startswith('/files')):
+                directory = sys.argv[2]
+                filename = path[7:]
+                reply = 'HTTP/1.1 201 Created\r\n\r\n'.encode()
+                f = open({filename}, "w")
+                f.write(reqBody)
+                return reply
         else:
             return "HTTP/1.1 404 Not Found\r\n\r\n".encode()
     
@@ -48,10 +58,10 @@ def main():
         print(f"Received: {request}")
         
         # Parsing the request to get method, path, and version
-        method, path, version = parse_request(request)
+        method, path, version, headers, body = parse_request(request)
         
         # Generating the appropriate response based on the path
-        http_response = response(path, request)
+        http_response = response(method, path, version, headers, body)
         
         # Sending the response back to the client
         client_socket.sendall(http_response)

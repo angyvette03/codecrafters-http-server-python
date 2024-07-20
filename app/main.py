@@ -45,11 +45,11 @@ def main():
                 try:
                     with open(f"{directory}/{filename}", "w") as f:
                         f.write(reqBody)
-                    return "HTTP/1.1 201 Created\r\n\r\n".encode()
+                    return f"HTTP/1.1 201 Created\r\n\r\n".encode()
                 except Exception as e:
-                    return "HTTP/1.1 500 Internal Server Error\r\n\r\n".encode()
+                    return f"HTTP/1.1 500 Internal Server Error\r\n\r\n".encode()
         else:
-            return "HTTP/1.1 404 Not Found\r\n\r\n".encode()
+            return f"HTTP/1.1 404 Not Found\r\n\r\n".encode()
     
     server_socket = socket.create_server(("localhost", 4221), reuse_port=True)
     server_socket.listen() 

@@ -11,11 +11,9 @@ def main():
     def parse_request(request):
         lines = request.split("\r\n")
         method, path, version = lines[0].split(" ")
-        headers = lines[1: -1]
-        body = lines[-1]
-        return method, path, version, headers, body
+        return method, path, version
     
-    def response(method, path, request, headers, reqBody):
+    def response(method, path, request):
         resType = 'text/plain'
         if method == 'GET':
             if (path =='/'):
@@ -43,6 +41,7 @@ def main():
             if (path.startswith('/files')):
                 directory = sys.argv[2]
                 filename = path[7:]
+                reqBody = request.split("\r\n")[-1]
                 try:
                     with open(f"{directory}/{filename}", "w") as f:
                         f.write(reqBody)
@@ -60,10 +59,10 @@ def main():
         print(f"Received: {request}")
         
         # Parsing the request to get method, path, and version
-        method, path, version, headers, body = parse_request(request)
+        method, path, version = parse_request(request)
         
         # Generating the appropriate response based on the path
-        http_response = response(method, path, version, headers, body)
+        http_response = response(method, path, request)
         
         # Sending the response back to the client
         client_socket.sendall(http_response)

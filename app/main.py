@@ -43,10 +43,12 @@ def main():
             if (path.startswith('/files')):
                 directory = sys.argv[2]
                 filename = path[7:]
-                reply = 'HTTP/1.1 201 Created\r\n\r\n'.encode()
-                f = open({filename}, "w")
-                f.write(reqBody)
-                return reply
+                try:
+                    with open(f"{directory}/{filename}", "w") as f:
+                        f.write(reqBody)
+                    return "HTTP/1.1 201 Created\r\n\r\n".encode()
+                except Exception as e:
+                    return "HTTP/1.1 500 Internal Server Error\r\n\r\n".encode()
         else:
             return "HTTP/1.1 404 Not Found\r\n\r\n".encode()
     

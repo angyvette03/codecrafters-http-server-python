@@ -60,6 +60,7 @@ def main():
         
         # Parsing the request to get method, path, and version
         method, path, version = parse_request(request)
+        print(f"Method: {method}")
         
         # Generating the appropriate response based on the path
         http_response = response(method, path, request)

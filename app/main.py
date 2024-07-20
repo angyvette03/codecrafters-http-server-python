@@ -24,10 +24,17 @@ def main():
                 length = str(len(userAgent))
                 return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\r\n{userAgent}").encode()
             elif ("echo" in path):
-                res = path.split('/')[2]
-                length = str(len(res))
-                body = str(res)
-                return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\r\n{body}").encode()
+                acceptEncodingHeader = request.split("\r\n")[1]
+                encodingType = acceptEncodingHeader.split(" ")[1]
+                if(encodingType == 'gzip'):
+                    return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Encoding: {encodingType}").encode()
+                elif(encodingType == 'invalid-encoding'):
+                    return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\n").encode()
+                else:
+                    res = path.split('/')[2]
+                    length = str(len(res))
+                    body = str(res)
+                    return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\r\n{body}").encode()
             elif (path.startswith('/files')):
                 directory = sys.argv[2]
                 filename = path[7:]

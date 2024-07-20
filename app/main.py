@@ -56,7 +56,7 @@ def main():
 
     def handle_client_connection(client_socket):
         request = client_socket.recv(1024).decode('utf-8')
-        print(f"Received: {request}")
+        # print(f"Received: {request}")
         
         # Parsing the request to get method, path, and version
         method, path, version = parse_request(request)
@@ -65,6 +65,9 @@ def main():
         
         # Generating the appropriate response based on the path
         http_response = response(method, path, request)
+        print(f"Request: {request}")
+        print(f"Response: {http_response}")
+        
         
         # Sending the response back to the client
         client_socket.sendall(http_response)

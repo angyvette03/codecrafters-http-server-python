@@ -37,6 +37,8 @@ def main():
                         return (f"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {len(body)}\r\n\r\n{body}").encode()
                 except Exception as e:
                         return f"HTTP/1.1 404 Not Found\r\n\r\n".encode()
+            else: 
+                return "HTTP/1.1 404 Not Found\r\n\r\n".encode()
         elif (method == 'POST'):
             if (path.startswith('/files')):
                 directory = sys.argv[2]
@@ -49,7 +51,7 @@ def main():
                 except Exception as e:
                     return f"HTTP/1.1 500 Internal Server Error\r\n\r\n".encode()
         else:
-            return f"HTTP/1.1 404 Not Found\r\n\r\n".encode()
+            return "HTTP/1.1 404 Not Found\r\n\r\n".encode()
     
     server_socket = socket.create_server(("localhost", 4221), reuse_port=True)
     server_socket.listen() 
@@ -66,7 +68,7 @@ def main():
         # Generating the appropriate response based on the path
         http_response = response(method, path, request)
         print(f"Request: {request}")
-        print(f"Response: {http_response.decode()}")
+        # print(f"Response: {http_response.decode()}")
         
         
         # Sending the response back to the client

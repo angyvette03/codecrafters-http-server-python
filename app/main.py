@@ -45,8 +45,9 @@ def main():
                 # # else:
                 #     return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\n\r\n{len(path.split('/')[2])}").encode()
                 else:
+                    res = path.split('/')[2]
                     print('hello world')
-                    return (f"HTTP/1.1 200 OK\r\nContent-Type:'text/plain'\r\nContent-Length: {len(path.split('/')[2])}\r\n\r\n{path.split('/')[2]}").encode()
+                    return (f"HTTP/1.1 200 OK\r\nContent-Type:'text/plain'\r\nContent-Length: {len(res)}\r\n\r\n{res}").encode()
             elif (path.startswith('/files')):
                 directory = sys.argv[2]
                 filename = path[7:]

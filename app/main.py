@@ -34,7 +34,7 @@ def main():
                 # else:
                 res = path.split('/')[2]
                 compressEncoding = 'gzip'
-                compressedBody = gzip.compress(res)
+                compressedBody = gzip.compress(res.encode())
                 length = str(len(compressedBody))
                 body = res
                 print("BODY",compressedBody)

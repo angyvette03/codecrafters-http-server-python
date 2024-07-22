@@ -37,7 +37,7 @@ def main():
                 compressedBody = gzip.compress(res.encode())
                 length = str(len(compressedBody))
                 body = str(res)
-                return (f"HTTP/1.1 200 OK\r\nContent-Encoding: {compressEncoding}\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n{body}\r\n\r\n").encode()
+                return (f"HTTP/1.1 200 OK\r\nContent-Encoding: {compressEncoding}\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\r\n{body}\r\n\r\n").encode()
             elif (path.startswith('/files')):
                 directory = sys.argv[2]
                 filename = path[7:]

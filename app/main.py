@@ -43,7 +43,7 @@ def main():
                     return response
                 elif(acceptEncodingHeader == 'invalid-encoding'):
                 # else:
-                    return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\n\r\n").encode()
+                    return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\n\r\n{len(path.split('/')[2])}").encode()
                 else:
                     return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\n\r\n{len(path.split('/')[2])}").encode()
             elif (path.startswith('/files')):

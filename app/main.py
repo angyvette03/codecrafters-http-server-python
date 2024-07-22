@@ -33,12 +33,16 @@ def main():
                 # #     return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\n\r\n").encode()
                 # else:
                 res = path.split('/')[2]
-                compressEncoding = 'gzip'
                 compressedBody = gzip.compress(res.encode())
                 length = str(len(compressedBody))
-                body = res
-                print("BODY",compressedBody)
-                return (f"HTTP/1.1 200 OK\r\nContent-Encoding: {compressEncoding}\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n{compressedBody}\r\n\r\n").encode()
+                response = (
+                    f"HTTP/1.1 200 OK\r\n"
+                    f"Content-Encoding: gzip\r\n"
+                    f"Content-Type: {resType}\r\n"
+                    f"Content-Length: {length}\r\n"
+                    f"\r\n"
+                ).encode() + compressedBody
+                return response
             elif (path.startswith('/files')):
                 directory = sys.argv[2]
                 filename = path[7:]

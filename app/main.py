@@ -27,22 +27,23 @@ def main():
                 acceptEncodingHeader = request.split("\r\n")[2]
                 # print("encoding headers", acceptEncodingHeader)
                 
-                # if ('gzip' in acceptEncodingHeader):
+                if ('gzip' in acceptEncodingHeader):
                 #     return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Encoding: gzip\r\n\r\n").encode()
-                # # elif(acceptEncodingHeader == 'invalid-encoding'):
-                # #     return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\n\r\n").encode()
+                
                 # else:
-                res = path.split('/')[2]
-                compressedBody = gzip.compress(res.encode())
-                length = str(len(compressedBody))
-                response = (
-                    f"HTTP/1.1 200 OK\r\n"
-                    f"Content-Encoding: gzip\r\n"
-                    f"Content-Type: {resType}\r\n"
-                    f"Content-Length: {length}\r\n"
-                    f"\r\n"
-                ).encode() + compressedBody
-                return response
+                    res = path.split('/')[2]
+                    compressedBody = gzip.compress(res.encode())
+                    length = str(len(compressedBody))
+                    response = (
+                        f"HTTP/1.1 200 OK\r\n"
+                        f"Content-Encoding: gzip\r\n"
+                        f"Content-Type: {resType}\r\n"
+                        f"Content-Length: {length}\r\n"
+                        f"\r\n"
+                    ).encode() + compressedBody
+                    return response
+                elif(acceptEncodingHeader == 'invalid-encoding'):
+                    return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\n\r\n").encode()
             elif (path.startswith('/files')):
                 directory = sys.argv[2]
                 filename = path[7:]

@@ -45,6 +45,7 @@ def main():
                 # else:
                     return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\n\r\n{len(path.split('/')[2])}").encode()
                 else:
+                    print('hello world')
                     return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\n\r\n{len(path.split('/')[2])}\r\n").encode()
             elif (path.startswith('/files')):
                 directory = sys.argv[2]

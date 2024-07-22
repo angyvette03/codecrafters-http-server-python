@@ -38,7 +38,7 @@ def main():
                 length = str(len(compressedBody))
                 body = res
                 print("BODY",compressedBody)
-                return (f"HTTP/1.1 200 OK\r\nContent-Encoding: {compressEncoding}\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\{body}\r\n\r\n").encode()
+                return (f"HTTP/1.1 200 OK\r\nContent-Encoding: {compressEncoding}\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\{compressedBody}\r\n\r\n").encode()
             elif (path.startswith('/files')):
                 directory = sys.argv[2]
                 filename = path[7:]

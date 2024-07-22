@@ -2,7 +2,7 @@
 import socket
 import threading
 import sys
-
+import gzip
 
 def main():
     # You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -27,15 +27,17 @@ def main():
                 acceptEncodingHeader = request.split("\r\n")[2]
                 # print("encoding headers", acceptEncodingHeader)
                 
-                if ('gzip' in acceptEncodingHeader):
-                    return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Encoding: gzip\r\n\r\n").encode()
-                # elif(acceptEncodingHeader == 'invalid-encoding'):
-                #     return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\n\r\n").encode()
-                else:
-                    res = path.split('/')[2]
-                    length = str(len(res))
-                    body = str(res)
-                    return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\r\n{body}").encode()
+                # if ('gzip' in acceptEncodingHeader):
+                #     return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\nContent-Encoding: gzip\r\n\r\n").encode()
+                # # elif(acceptEncodingHeader == 'invalid-encoding'):
+                # #     return (f"HTTP/1.1 200 OK\r\nContent-Type: {resType}\r\n\r\n").encode()
+                # else:
+                res = path.split('/')[2]
+                length = str(len(compressedBody))
+                compressEncoding = 'gzip'
+                compressedBody = gzip.compress(res.encode())
+                body = str(res)
+                return (f"HTTP/1.1 200 OK\r\nContent-Encoding: {compressEncoding}\r\nContent-Type: {resType}\r\nContent-Length: {length}\r\n\r\n{body}").encode()
             elif (path.startswith('/files')):
                 directory = sys.argv[2]
                 filename = path[7:]
